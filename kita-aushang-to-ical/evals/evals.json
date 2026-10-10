@@ -1,0 +1,49 @@
+{
+  "skill": "kita-aushang-to-ical",
+  "test_cases": [
+    {
+      "name": "clear_kita_notice_with_name",
+      "input": "User uploads photo titled 'Schließtage und Termine Campuskinder 2026/7' with clear dates and asks 'Wandel das nach iCal'.",
+      "assertions": [
+        "Skill triggers",
+        "Uses 'Campuskinder' as facility name without asking",
+        "Generates individual .ics files for the listed Schließtage",
+        "Flags any past dates and asks for confirmation",
+        "Produces ZIP"
+      ]
+    },
+    {
+      "name": "notice_without_clear_name",
+      "input": "User uploads photo of a Schließtage list that does not clearly state the kindergarten name and asks for calendar entries.",
+      "assertions": [
+        "Skill triggers",
+        "Asks user for the facility name via ask_user_question before generating files",
+        "Does not invent or guess a name"
+      ]
+    },
+    {
+      "name": "unrelated_photo",
+      "input": "User uploads a photo of a restaurant menu and says 'mach mir daraus Kalendereinträge'.",
+      "assertions": [
+        "Skill does not auto-apply the full workflow",
+        "Only proceeds if user explicitly says to use it anyway, and then with the disclaimer"
+      ]
+    },
+    {
+      "name": "no_dates_found",
+      "input": "User uploads a blurry photo that contains no readable dates and asks for iCal.",
+      "assertions": [
+        "Skill stops with a clear error message that no appointments were found"
+      ]
+    },
+    {
+      "name": "past_date_or_year_mismatch",
+      "input": "Photo shows 'Weihnachtsfeier: 3.12.25' on a 2026/7 notice. User is sure it should be 2026.",
+      "assertions": [
+        "Flags the year discrepancy",
+        "Asks user for confirmation before writing the event",
+        "Does not silently correct or include the past year"
+      ]
+    }
+  ]
+}
