@@ -1,0 +1,29 @@
+{
+  "skill": "kita-aushang-to-ical",
+  "test_cases": [
+    {
+      "input": "Wandel dieses Foto der Kita-Schließtage nach iCal",
+      "should_trigger": true
+    },
+    {
+      "input": "Mach mir aus dem Aushang Kalendereinträge für die Krippe",
+      "should_trigger": true
+    },
+    {
+      "input": "iPhone kann die Sammel-.ics nicht laden, bitte Einzeldateien der Schließtage",
+      "should_trigger": true
+    },
+    {
+      "input": "Erkläre mir was ein Brückentag ist",
+      "should_trigger": false
+    },
+    {
+      "input": "Schreib mir eine Einkaufsliste",
+      "should_trigger": false
+    },
+    {
+      "input": "Convert this restaurant menu to a calendar",
+      "should_trigger": false
+    }
+  ]
+}
