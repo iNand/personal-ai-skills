@@ -29,12 +29,27 @@ If the image/text contains no extractable dates at all:
 
 - Prefer machine-printed dates. Note handwriting separately and flag it.
 - Ranges (e.g. 10.–28.08.26) become one multi-day all-day event.
-- Partial closures ("schließt nach dem Mittagessen") → timed event starting 12:30 (end 18:00 unless user specifies otherwise).
 - Missing dates ("Termin folgt noch") → omit and mention in the summary.
 - **Past dates**: Compare to current date. If any extracted date is in the past:
   - Flag it explicitly.
   - Use `ask_user_question` to confirm whether to include it, correct the year, or drop it.
   - Do not silently include or drop.
+
+## Partial closures / midday pickup
+
+- Extract explicit pickup time from the notice (e.g. "Abholung zw. 11.45 - 12.00 Uhr", "nach dem Mittagessen um 12:30").
+- If no time is given: use `ask_user_question` with suggestions:
+  - 11:45 (typical for "before lunch" / "vor dem Mittagessen")
+  - 12:45 (typical for "directly after lunch" / "direkt nach dem Mittagessen")
+  - Allow free-text answer.
+- Create timed event starting at the confirmed time (end 18:00 unless specified otherwise).
+- Always note the chosen time in COMMENT/DESCRIPTION.
+
+## Delta mode (same chat)
+
+- On repeated calls in the same conversation: generate only new or changed events.
+- Mention unchanged items briefly ("unverändert, weggelassen").
+- Re-generate only the corrected ones (e.g. pickup time updates).
 
 ## Default output rules (recommendations, not hard)
 
