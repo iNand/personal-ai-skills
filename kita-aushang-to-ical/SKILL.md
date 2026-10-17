@@ -29,24 +29,38 @@ Wandle Aushänge von Kindertagesstätten / Krippen (Schließtage, Feste, Elterna
 
 3. **Termine extrahieren und klassifizieren**
    - Schließtage (ganztägig) → All-Day-Blöcke, SUMMARY: "{Name} geschlossen", Grund im COMMENT.
-   - Teilschließungen ("nach dem Mittagessen") → Timed ab 12:30, SUMMARY: "{Name} geschlossen", Grund im COMMENT.
-   - Andere Events (Feste, Elternabende, Weihnachtsfeier etc.) → Timed mit angegebenen Uhrzeiten, SUMMARY: "{Name}: {Eventname}" (z. B. "Campus Kinder: Weihnachtsfeier").
+   - **Teilschließungen / Mittags-Abholung** ("nach dem Mittagessen", "Abholung"):
+     - Uhrzeit aus dem Aushang extrahieren (z. B. "Abholung zw. 11.45 - 12.00 Uhr").
+     - Wenn keine Uhrzeit angegeben: **sofort** `ask_user_question` mit Vorschlägen:
+       - 11:45 Uhr (typisch „vor dem Mittagessen“)
+       - 12:45 Uhr (typisch „direkt nach dem Mittagessen“)
+       - Freitext für andere Zeit
+     - Timed-Event ab der bestätigten Uhrzeit (Ende konventionell 18:00, wenn nicht anders angegeben).
+     - SUMMARY: "{Name} geschlossen", Grund + Abholzeit im COMMENT.
+   - Andere Events (Feste, Elternabende, Weihnachtsfeier etc.) → Timed mit angegebenen Uhrzeiten, SUMMARY: "{Name}: {Eventname}".
    - Fehlende Daten ("Termin folgt noch") → weglassen und erwähnen.
    - Handschrift und Jahres-Korrekturen flaggen.
    - Details: `references/parsing-guidelines.md`.
 
-4. **Vergangenheits-Check**
+4. **Delta-Modus im gleichen Chat**
+   - Wenn der Skill im selben Gespräch bereits verwendet wurde (vorherige Events bekannt):
+     - Nur geänderte oder neue Termine erzeugen (Delta).
+     - Unveränderte Termine weglassen und kurz erwähnen.
+     - Bei Korrekturen (z. B. Abholzeit) die betroffenen Events neu ausgeben.
+   - Beim ersten Aufruf im Chat: alle Termine.
+
+5. **Vergangenheits-Check**
    - Jedes Datum gegen aktuelles Datum prüfen.
    - Vergangenheit oder verdächtige Jahreszahl → flaggen und mit `ask_user_question` bestätigen lassen.
    - Niemals stillschweigend übernehmen oder streichen.
 
-5. **Adresse online recherchieren (Pflicht, wenn Name bekannt)**
+6. **Adresse online recherchieren (Pflicht, wenn Name bekannt)**
    - Sobald der Einrichtungsname eindeutig ist: mit `web_search` oder `places_search` die offizielle Adresse suchen (z. B. „Kita {Name} Adresse“, „{Name} Kindertagesstätte Standort“).
    - Bevorzugt offizielle Quellen (Trägerseite, städtische Kita-Liste, Studierendenwerk etc.).
    - Nur die gefundene Adresse als LOCATION eintragen. Wenn mehrere Treffer oder unklar → Nutzer fragen, nicht raten.
    - Wenn nichts gefunden wird: LOCATION weglassen und erwähnen.
 
-6. **Strukturierte Events erzeugen**
+7. **Strukturierte Events erzeugen**
    - Pro logischem Termin / Block ein Event.
    - Filename beginnt mit YYYY-MM-DD.
    - SUMMARY immer mit Einrichtungsname.
@@ -54,7 +68,7 @@ Wandle Aushänge von Kindertagesstätten / Krippen (Schließtage, Feste, Elterna
    - LOCATION = die online recherchierte (oder vom Nutzer bestätigte) Adresse.
    - Regeln: `references/ical-rules.md`.
 
-7. **Ausgabe wählen**
+8. **Ausgabe wählen**
    - Standard: einzelne .ics + ZIP über `scripts/generate_ics.py`.
    - Auf Wunsch ("trag es gleich ein", "Google Kalender", "Outlook"): 
      - Prüfe mit `search_connected_tools`, ob Google Calendar oder Outlook Calendar verbunden ist.
@@ -62,7 +76,7 @@ Wandle Aushänge von Kindertagesstätten / Krippen (Schließtage, Feste, Elterna
      - Wenn verbunden: Termine direkt anlegen (All-Day oder Timed) **inkl. der recherchierten Adresse**.
    - Beide Wege können parallel angeboten werden.
 
-8. **Antwort**
+9. **Antwort**
    - Kurze Übersicht der Termine (Schließungen und andere Events getrennt).
    - Explizit: weggelassene Einträge, korrigierte Daten, nachgefragte Punkte, verwendete Adresse.
    - Hinweis auf iPhone-Import der Einzeldateien oder auf den Status der Kalender-Eintragung.
