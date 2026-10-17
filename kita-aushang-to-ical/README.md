@@ -16,6 +16,8 @@ Designed for parents who receive photo or paper notices about closing days and e
 
 ## Installation
 
+**Recommendation:** Before installing any third-party skill (including this one), consider loading [skill-gate](../skill-gate/) first. It performs a static security review of foreign skills before they are activated. See the skill-gate README for the problem it addresses and how to install it.
+
 ### Recommended: Ask the agent (copy-paste)
 
 Copy the following message into your chat:
