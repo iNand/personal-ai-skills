@@ -1,3 +1,7 @@
+## 2026-10-17
+- Midday pickup: extract time from notice; if missing, ask user with suggestions 11:45 (before lunch) and 12:45 (after lunch)
+- Delta mode: on repeated calls in the same chat, output only changed/new events
+
 ## 2026-10-10 (Update 2)
 - Mandatory online search for the facility address once the name is known
 - Address is stored as LOCATION in every event (and in direct calendar entries)
