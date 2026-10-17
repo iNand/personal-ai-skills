@@ -10,11 +10,15 @@ These are practical AI skills (prompts, workflows, small tools, or agent instruc
 
 ## Skills
 
+- **[skill-gate](skill-gate/)** — Lightweight two-stage security gate for loading third-party AI skills. Performs a static review before any foreign skill is activated. Designed as a personal, pragmatic alternative to heavier enterprise controls.
+
 - **[kita-aushang-to-ical](kita-aushang-to-ical/)** — Convert German kindergarten/daycare closing-date notices (and other events) from photos or text into individual iCal files or directly into Google/Outlook Calendar. Includes facility name in titles, looks up the official address, and asks for confirmation on ambiguous or past dates.
+
+Further skills will follow at a later time.
 
 ## Structure
 
-Skills live in their own directories (e.g. `kita-aushang-to-ical/`). Each skill is self-contained with SKILL.md, references, scripts, and evals.
+Skills live in their own directories (e.g. `skill-gate/`, `kita-aushang-to-ical/`). Each skill is self-contained with its own SKILL.md and supporting files.
 
 ## Contributing
 
