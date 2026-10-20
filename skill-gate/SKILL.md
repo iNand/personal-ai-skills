@@ -24,6 +24,11 @@ Any request to load, install, use, or activate a skill (by path, GitHub URL, nam
    - Basic static code patterns in any scripts: network calls, subprocess/eval/exec, credential or key-file access, writes outside expected paths.
    - Prohibited intent (static check): Flag if the skill’s primary purpose appears to be either (1) actionable assistance for real-world severe harm (self-harm, serious violence, or clearly illegal acts aimed at harm) or (2) emotional manipulation to extract money, credentials, or sustained dependency (e.g. romance/girlfriend scams, pressure-based charity appeals).  
      Explicitly allowed: harsh criticism, devil’s advocate, red-teaming, or challenging the user’s assumptions — as long as they do not cross into the two categories above.
+   - URL / redirection check (static):
+     Extract all visible URLs and domain-like strings from SKILL.md and scripts.
+     Flag if they match known lookalike / typosquatting / homograph patterns against common targets (e.g. amazon, ebay, paypal, google) or contain mixed-script / suspicious Unicode.
+     Clear malicious match → Red Flag.
+     Indicators of dynamic URL construction (string concatenation, encoding, chr/ord, template building, external fetch of URL parts) without a clear benign source → Grey Area.
 4. Decide quickly:
    - **OK** → Respond:  
      “Skill looks okay. Description matches the instructions. Static checks show no obvious issues (sandbox/local-data profile noted). Do you want to install and continue?”
@@ -39,6 +44,7 @@ Only run when Stage 1 returned Grey Area and the user explicitly agrees.
 - Expand the static pattern scan.
 - Compare the skill (name, description, distinctive strings, or repo) against known public threat lists and reports (e.g. Snyk ToxicSkills, OWASP Agentic Skills case studies, other published malicious-skill databases).
 - Re-evaluate sandbox posture, persistent-data writes, and prohibited intent with higher scrutiny.
+- When Grey Area was triggered by dynamic URL indicators: isolate the relevant code sections and analyse them for systematic obfuscation (multi-step string building, encoding layers, hidden character construction, runtime assembly of domains). Report findings before asking for activation.
 - Report findings clearly, then again ask for explicit approval before activation.
 
 ## Rules
